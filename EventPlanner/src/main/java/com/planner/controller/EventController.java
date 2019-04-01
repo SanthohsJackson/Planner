@@ -1,25 +1,35 @@
 package com.planner.controller;
 
-import java.util.Date;
+import java.util.List;
 
+import javax.validation.Valid;
+
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planner.data.Event;
+import com.planner.service.EventService;
 
 @RestController
 @RequestMapping("/event")
 public class EventController {
 
-	@GetMapping
-	public Event getEvent() {
+	@Autowired
+	private EventService eventService;
 
-		Event event = new Event();
-		event.setName("Test Event");
-		Date date = new Date();
-		event.setTime(date.toString());
-		return event;
+	@GetMapping
+	public List<Event> getEvent() {
+		return eventService.getAllEvents();
+	}
+
+	@PostMapping
+	public Event createPet(@Valid @RequestBody Event event) {		
+		return eventService.saveEvent(event);
 	}
 
 }
